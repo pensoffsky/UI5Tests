@@ -1,0 +1,18 @@
+<core:View xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.m"
+	controllerName="view.Main" 
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:l="sap.ui.layout"
+	>
+	<Page title="UI5 XML View Template">
+		<content>
+	<Panel text="Hello World">
+		<l:VerticalLayout>
+			<Label id="idLabelTest" text="label"/>
+			<Button text="Animate label" press="doSomething"/>
+		</l:VerticalLayout>
+	</Panel>
+	</content>
+	</Page>
+</core:View>
