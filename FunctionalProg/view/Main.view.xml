@@ -5,7 +5,7 @@
 	<Page title="UI5 XML View Template">
 		<content>
 	<Panel text="Functional Programming Examples">
-		<Button text="{/actionName}" press="doSomething"/>
+		<Button text="DEBUGGER" press="doSomething"/>
 	</Panel>
 	</content>
 	</Page>
