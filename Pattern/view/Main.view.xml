@@ -1,0 +1,57 @@
+<core:View xmlns:core="sap.ui.core" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.m" controllerName="view.Main" 
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page showHeader="false" enableScrolling="false">
+		<content>
+			<VBox fitContainer="true">
+				<!--header-->
+				<HBox justifyContent="End">
+					<Image src="Baustelle.svg" 
+					width="20px" 
+					height="20px"
+					class="element-animation"
+					/>
+					<Button text="Add" class="element-animation"/>
+				</HBox> 
+				
+				<!--3 panes content-->
+				<HBox  width="100%" alignItems="Stretch">
+					<layoutData>
+		            	<FlexItemData growFactor="1" />
+		          	</layoutData>
+					
+					<!--List and filter-->
+					<VBox width="200px">
+						<Page width="100%" showHeader="false">
+							<layoutData>
+				            	<FlexItemData growFactor="1" />
+				          	</layoutData>
+							<List width="100%"
+									items="{/patterns}"
+									>
+					          	<StandardListItem
+							      title="{}"
+							      />
+							</List>
+						</Page>
+					</VBox>
+					
+					<!--GridView Content-->
+					<FlexBox >
+						<layoutData>
+			            	<FlexItemData growFactor="1" />
+			          	</layoutData>
+						
+					</FlexBox>
+					
+					<!--Right Detail Pane-->
+					<VBox width="200px">
+						
+					</VBox>
+					
+				</HBox>
+			</VBox>
+		</content>
+	</Page>
+</core:View>

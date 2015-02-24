@@ -10,6 +10,23 @@
   </script>
 
   <script>
+  
+    function toArray(aArray){
+      return Array.prototype.slice.call(aArray);
+    };
+  
+    Function.prototype.curry = function (){
+      var f = this;
+      if(arguments.length < 1){
+        return f;
+      }
+      var a = toArray(arguments);
+      return function(){
+        var b = toArray(arguments);
+        return f.apply(this, a.concat(b));
+      };
+    };
+  
     // create some dummy JSON data
     var data = {
       actionName: "Say Hello"

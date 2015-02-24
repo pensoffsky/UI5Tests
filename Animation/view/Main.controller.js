@@ -13,6 +13,40 @@ sap.ui.controller("view.Main", {
 		}
 		
 		//debugger;
-	}
+	},
+	
+
+	onBtnRemovePress : function(oEvent) {
+		
+		var oList = this.getView().byId("idList");
+		var aItems = oList.getItems();
+		var oLastItem = aItems[aItems.length -1];
+		var oLastItemJqueryObject = $([oLastItem.getDomRef()]);
+		var oModel = sap.ui.getCore().getModel();
+		
+		oLastItemJqueryObject.animate({height:"0px"}, "fast", 
+			function(){
+				var aCities = oModel.getProperty("/cities");
+				aCities.splice(aCities.length -1 ,1);
+				oModel.setProperty("/cities", aCities);	
+			});
+	},
+	
+
+	onBtnAddPress : function(oEvent) {
+		var oModel = sap.ui.getCore().getModel();
+		var aCities = oModel.getProperty("/cities");
+		aCities.push({name: "Frankfurt"});
+		oModel.setProperty("/cities", aCities);	
+	},
+	
+	/**
+	 * TODO what does this function do
+	 * @public
+	 */
+	onSpritePress : function() {
+		var oSprite = this.getView().byId("idSprite");
+		oSprite.startAnimation();
+	},
 	
 });
