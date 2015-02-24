@@ -29,9 +29,24 @@ sap.m.Image.extend('view.Sprite', {
                 defaultValue : 1000
             },
             
-            "steps" : {
+            "stepsX" : {
                 type : "int",
-                defaultValue : 4
+                defaultValue : 0
+            },
+            
+            "stepsY" : {
+                type : "int",
+                defaultValue : 0
+            },
+            
+            "startX" : {
+                type : "int",
+                defaultValue : 0
+            },
+            
+            "startY" : {
+                type : "int",
+                defaultValue : 0
             },
             
             "stepWidth" : {
@@ -100,6 +115,7 @@ view.Sprite.prototype.init = function() {
 
 view.Sprite.prototype.onAfterRendering = function() {
     sap.m.Image.prototype.onAfterRendering.call(this);
+    this.stopAnimation();
     this.startAnimation();
 };
 
@@ -110,16 +126,44 @@ view.Sprite.prototype.startAnimation = function() {
     }
     
     var that = this;
-    that._currentStep = 0;
+    //TODO set start steps
+    that._currentStepX = that.getStartX();
+    that._currentStepY = that.getStartY();
     that._nIntervId = setInterval(function(){ 
+        
         var width = that.getWidth();
-        that._currentStep++;
-        if(that._currentStep >= that.getSteps()){
-            //TODO check for repeat
-            that._currentStep = 0;
-            clearInterval(that._nIntervId);
-            that._nIntervId = null;
+        that._currentStepX++;
+        
+        //end of line?
+        if(that._currentStepX >= that.getStepsX()){
+            //next line
+            that._currentStepY++;
+            that._currentStepX = 0;
+            
+            //start from 0,0?
+            if(that._currentStepY >= that.getStepsY()){
+                that._currentStepY = 0;
+                if(that.getRepeat() === false){
+                    //stop animation
+                    clearInterval(that._nIntervId);
+                    that._nIntervId = null;
+                }
+            }
         }
-        that.$().css("background-position-x", "" + that._currentStep * that.getStepWidth() +"px");    
+        
+        that.$().css("background-position-x", "" + that._currentStepX * that.getStepWidth() +"px");    
+        that.$().css("background-position-y", "" + that._currentStepY * that.getStepHeight() +"px");   
     }, that.getDelayMs());
+};
+
+view.Sprite.prototype.stopAnimation = function() {
+    if(!this._nIntervId){
+        //animation not running
+        return;
+    }
+    
+    window.clearInterval(this._nIntervId);
+    
+    this.$().css("background-position-x", "" + 0 +"px");    
+    this.$().css("background-position-y", "" + 0 +"px");  
 };

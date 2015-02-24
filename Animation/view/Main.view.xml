@@ -8,19 +8,23 @@
 	>
 	<Page title="UI5 XML View Template">
 		<content>
+			
 			<custom:Sprite src="view/img_trans.gif" 
-						   spriteSrc="view/deer-sprite.png"
-						   width="280px"
-						   height="473px"
-						   densityAware="false"
-						   steps="8"
-						   delayMs="100"
-						   stepWidth="280"
+						   spriteSrc="view/walk-cycle.png"
+						   width="48px"
+						   stepWidth="48"
+						   height="92px"
+						   stepHeight="92"
+						   stepsX="9"
+						   stepsY="8"
+						   startY="0"
+						   delayMs="66"
+						   repeat="false"
 						   id="idSprite"
 						   press="onSpritePress"
-						   repeat="false"
+						   densityAware="false"
 							/>
-				
+			<Label text="click To Animate"></Label>	
 			
 			<List items="{/cities}" id="idList">
 				<StandardListItem title="{name}"/>
