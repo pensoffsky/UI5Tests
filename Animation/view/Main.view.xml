@@ -8,36 +8,54 @@
 	>
 	<Page title="UI5 XML View Template">
 		<content>
+			<Panel expandable="true" expanded="true" headerText="Animated Sprite">
+				<Label text="click To Animate"></Label>	
+				<custom:AnimatedSprite spriteSrc="view/walk-cycle.png"
+									   width="48px"
+									   stepWidth="48"
+									   height="92px"
+									   stepHeight="92"
+									   stepsX="9"
+									   stepsY="8"
+									   startY="0"
+									   delayMs="66"
+									   repeat="false"
+									   id="idAnimatedSprite"
+									   press="onSpritePress"
+									   densityAware="false"
+									   />
+				<custom:Sprite spriteSrc="view/walk-cycle.png"
+							   width="48px"
+							   stepWidth="48"
+							   height="92px"
+							   stepHeight="92"
+							   stepsX="9"
+							   stepsY="8"
+							   startY="0"
+							   delayMs="66"
+							   repeat="false"
+							   id="idSprite"
+							   press="onSpritePress"
+							   densityAware="false"
+								/>
+			</Panel>
 			
-			<custom:Sprite src="view/img_trans.gif" 
-						   spriteSrc="view/walk-cycle.png"
-						   width="48px"
-						   stepWidth="48"
-						   height="92px"
-						   stepHeight="92"
-						   stepsX="9"
-						   stepsY="8"
-						   startY="0"
-						   delayMs="66"
-						   repeat="false"
-						   id="idSprite"
-						   press="onSpritePress"
-						   densityAware="false"
-							/>
-			<Label text="click To Animate"></Label>	
+			<Panel expandable="true" expanded="false" headerText="List Animation">
+				<List items="{/cities}" id="idList">
+					<StandardListItem title="{name}"/>
+				</List>
+				<l:HorizontalLayout>
+					<Button text="remove" press="onBtnRemovePress"/>
+					<Button text="add" press="onBtnAddPress"/>
+				</l:HorizontalLayout>
+			</Panel>
 			
-			<List items="{/cities}" id="idList">
-				<StandardListItem title="{name}"/>
-			</List>
-			<l:HorizontalLayout>
-				<Button text="remove" press="onBtnRemovePress"/>
-				<Button text="add" press="onBtnAddPress"/>
-			</l:HorizontalLayout>
-			
-			<l:VerticalLayout>
-				<Label id="idLabelTest" text="label"/>
-				<Button text="Animate label" press="doSomething"/>
-			</l:VerticalLayout>
+			<Panel expandable="true" expanded="false" headerText="Moving Stuff">
+				<l:VerticalLayout>
+					<Label id="idLabelTest" text="label"/>
+					<Button text="Animate label" press="doSomething"/>
+				</l:VerticalLayout>
+			</Panel>
 		</content>
 	</Page>
 </core:View>

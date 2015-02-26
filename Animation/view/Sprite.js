@@ -36,7 +36,7 @@ sap.m.Image.extend('view.Sprite', {
             
             "stepsY" : {
                 type : "int",
-                defaultValue : 0
+                defaultValue : 1
             },
             
             "startX" : {
@@ -69,7 +69,8 @@ sap.m.Image.extend('view.Sprite', {
 // Open the <img> tag
 		oRm.write("<img");
 	
-		oRm.writeAttributeEscaped("src", oImage._getDensityAwareSrc());
+		//oRm.writeAttributeEscaped("src", oImage._getDensityAwareSrc());
+		oRm.writeAttributeEscaped("src", "view/img_trans.gif");
 		oRm.writeControlData(oImage);
 		
 		oRm.addClass("viewSprite");
