@@ -45,7 +45,7 @@ sap.ui.controller("view.Main", {
 	 * @public
 	 */
 	onSpritePress : function() {
-		var oSprite = this.getView().byId("idSprite");
+		var oSprite = this.getView().byId("idAnimatedSprite");
 		oSprite.startAnimation();
 	},
 	

@@ -6,11 +6,11 @@
 	xmlns:l="sap.ui.layout"
 	xmlns:custom="view"
 	>
-	<Page title="UI5 XML View Template">
+	<Page title="Animations">
 		<content>
 			<Panel expandable="true" expanded="true" headerText="Animated Sprite">
 				<Label text="click To Animate"></Label>	
-				<custom:AnimatedSprite spriteSrc="view/walk-cycle.png"
+				<custom:AnimatedSprite src="view/walk-cycle.png"
 									   width="48px"
 									   stepWidth="48"
 									   height="92px"
@@ -24,20 +24,6 @@
 									   press="onSpritePress"
 									   densityAware="false"
 									   />
-				<custom:Sprite spriteSrc="view/walk-cycle.png"
-							   width="48px"
-							   stepWidth="48"
-							   height="92px"
-							   stepHeight="92"
-							   stepsX="9"
-							   stepsY="8"
-							   startY="0"
-							   delayMs="66"
-							   repeat="false"
-							   id="idSprite"
-							   press="onSpritePress"
-							   densityAware="false"
-								/>
 			</Panel>
 			
 			<Panel expandable="true" expanded="false" headerText="List Animation">
