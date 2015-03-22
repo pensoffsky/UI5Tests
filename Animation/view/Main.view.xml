@@ -12,17 +12,14 @@
 				<Label text="click To Animate"></Label>	
 				<custom:AnimatedSprite src="view/walk-cycle.png"
 									   width="48px"
-									   stepWidth="48"
 									   height="92px"
-									   stepHeight="92"
+									   animateOnce="true"
+									   repeat="false"
 									   stepsX="9"
 									   stepsY="8"
-									   startY="0"
 									   delayMs="66"
-									   repeat="false"
 									   id="idAnimatedSprite"
 									   press="onSpritePress"
-									   densityAware="false"
 									   />
 			</Panel>
 			

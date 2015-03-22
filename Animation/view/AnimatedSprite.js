@@ -60,22 +60,95 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
             }
         });
 
+// /////////////////////////////////////////////////////////////////////////////
+// /// Control Overrides
+// /////////////////////////////////////////////////////////////////////////////
+
         AnimatedSprite.prototype.init = function() {
             this._initialAnimationFinished = false;
-        };
-
-        AnimatedSprite.prototype.onAfterRendering = function() {
-            if (this.getAnimateOnce() && this._initialAnimationFinished === false) {
-                this._initialAnimationFinished = true;
-                this.stopAnimation();
-                this.startAnimation();
-            }
         };
 
         AnimatedSprite.prototype.ontap = function(oEvent) {
     		this.firePress({/* no parameters */});
     	};
 
+        AnimatedSprite.prototype.onAfterRendering = function() {
+            
+			var $DomNode = this.$();
+	
+			// bind the load and error event handler
+			$DomNode.on("load", jQuery.proxy(this.onload, this));
+			$DomNode.on("error", jQuery.proxy(this.onerror, this));
+	
+			var oDomRef = this.getDomRef();
+	
+			// if image has already been loaded and the load or error event handler hasn't been called, trigger it manually.
+			if (oDomRef.complete && !this._defaultEventTriggered && oDomRef.naturalWidth !== 1) {
+	
+				// need to use the naturalWidth property instead of jDomNode.width(),
+				// the later one returns positive value even in case of broken image
+				$DomNode.trigger(oDomRef.naturalWidth > 1 ? "load" : "error");	//  image loaded successfully or with error
+			}
+        };
+
+        /**
+    	 * Function is called when image is loaded successfully.
+    	 *
+    	 * @param {jQuery.Event} oEvent
+    	 * @private
+    	 */
+    	AnimatedSprite.prototype.onload = function(oEvent) {	
+    		if (!this._defaultEventTriggered) {
+    			this._defaultEventTriggered = true;
+    		}
+    		
+    		var $DomNode = this.$(),
+    			oDomRef = $DomNode[0];
+    
+            //get set width and height and set it
+            //for the step sizes (sizes of individual images in the sprite sheet)
+            var width = $DomNode.width();
+            this.setStepWidth(width);
+            var height = $DomNode.height();
+            this.setStepHeight(height);
+            
+            //get the background size
+            //once the callback is called the image is ready to play the animation
+            var that = this;
+            this._getBackgroundSize(function(oBackgroundSize){
+                if(oBackgroundSize.width > 0 && oBackgroundSize.height > 0){
+                    that._oBackgroundSize = oBackgroundSize;
+                    //background image loaded
+                    //start the animation if once if animateOnce property is set
+                    if (that.getAnimateOnce() && that._initialAnimationFinished === false) {
+                        that._initialAnimationFinished = true;
+                        that.stopAnimation();
+                        that.startAnimation();
+                    }
+                }
+            });
+    	};
+
+        /**
+    	 * Function is called when error occurs during image loading.
+    	 *
+    	 * @param {jQuery.Event} oEvent
+    	 * @private
+    	 */
+    	AnimatedSprite.prototype.onerror = function(oEvent) {
+    	
+    		// This is used to fix the late load event handler problem on ios platform, if the event handler
+    		// has not been called right after image is loaded with errors, event is triggered manually in onAfterRendering
+    		// method.
+    		if (!this._defaultEventTriggered) {
+    			this._defaultEventTriggered = true;
+    		}
+    	};
+        
+// /////////////////////////////////////////////////////////////////////////////
+// /// Public functions
+// /////////////////////////////////////////////////////////////////////////////
+        
         AnimatedSprite.prototype.startAnimation = function() {
             if (this._nIntervId) {
                 //animation already running
@@ -89,6 +162,25 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
                 that._animateNextStep();
             }, that.getDelayMs());
         };
+
+
+
+        AnimatedSprite.prototype.stopAnimation = function() {
+            if (!this._nIntervId) {
+                //animation not running
+                return;
+            }
+
+            window.clearInterval(this._nIntervId);
+
+            this.$().css("background-position-x", "" + 0 + "px");
+            this.$().css("background-position-y", "" + 0 + "px");
+        };
+
+
+// /////////////////////////////////////////////////////////////////////////////
+// /// Private functions
+// /////////////////////////////////////////////////////////////////////////////
 
         AnimatedSprite.prototype._animateNextStep = function() {
             //var width = this.getWidth();
@@ -115,17 +207,17 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
             this.$().css("background-position-y", "" + this._currentStepY * this.getStepHeight() + "px");
         };
 
-        AnimatedSprite.prototype.stopAnimation = function() {
-            if (!this._nIntervId) {
-                //animation not running
-                return;
+    	AnimatedSprite.prototype._getBackgroundSize = function(fCallback) {
+            var img = new Image();
+            var $DomNode = this.$();
+              
+            img.onload = function () {
+                // call the callback with the width and height
+                fCallback({ width: this.width, height: this.height });
             }
-
-            window.clearInterval(this._nIntervId);
-
-            this.$().css("background-position-x", "" + 0 + "px");
-            this.$().css("background-position-y", "" + 0 + "px");
-        };
+            // extract image source from css using one, simple regex
+            img.src = $DomNode.css('background-image').replace(/url\(['"]*(.*?)['"]*\)/g, '$1');
+        }
 
         return AnimatedSprite;
 
