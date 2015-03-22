@@ -3,8 +3,6 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
     function(jQuery, Control) {
         "use strict";
 
-//TODO event that fires at end of animation
-
         var AnimatedSprite = Control.extend("view.AnimatedSprite", {
             metadata: {
 
@@ -57,7 +55,10 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
                     /**
         			 * Event is fired when the user clicks on the control.
         			 */
-			        press : {}
+			        press : {},
+			        
+			        animationFinished : {},
+			        animationStarted : {}
                 }
             }
         });
@@ -151,9 +152,16 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
 // /// Public functions
 // /////////////////////////////////////////////////////////////////////////////
         
-        AnimatedSprite.prototype.startAnimation = function() {
+        AnimatedSprite.prototype.isAnimationRunning = function() {
             if (this._nIntervId) {
-                //animation already running
+                return true;
+            } else {
+                return false;
+            }
+        };
+        
+        AnimatedSprite.prototype.startAnimation = function() {
+            if(this.isAnimationRunning()){
                 return;
             }
 
@@ -163,22 +171,22 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
             this._nIntervId = setInterval(function() {
                 that._animateNextStep();
             }, that.getDelayMs());
+            this.fireAnimationStarted({/* no parameters */});
         };
 
-
-
         AnimatedSprite.prototype.stopAnimation = function() {
-            if (!this._nIntervId) {
+            if(this.isAnimationRunning() === false){
                 //animation not running
                 return;
             }
 
             window.clearInterval(this._nIntervId);
+            this._nIntervId = null;
 
             this.$().css("background-position-x", "" + 0 + "px");
             this.$().css("background-position-y", "" + 0 + "px");
+            this.fireAnimationFinished({/* no parameters */});
         };
-
 
 // /////////////////////////////////////////////////////////////////////////////
 // /// Private functions
@@ -199,8 +207,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
                     this._currentStepY = 0;
                     if (this.getRepeat() === false) {
                         //stop animation
-                        clearInterval(this._nIntervId);
-                        this._nIntervId = null;
+                        this.stopAnimation();
+                        return;
                     }
                 }
             }

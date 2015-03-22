@@ -44,9 +44,17 @@ sap.ui.controller("view.Main", {
 	 * TODO what does this function do
 	 * @public
 	 */
-	onSpritePress : function() {
+	onSpritePress : function(oEvent) {
 		var oSprite = this.getView().byId("idAnimatedSprite");
 		oSprite.startAnimation();
+	},
+	
+	animationStarted : function(oEvent) {
+		console.log("animationStarted");
+	},
+	
+	animationFinished : function(oEvent) {
+		console.log("animationFinished");
 	},
 	
 });

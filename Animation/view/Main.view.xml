@@ -20,6 +20,8 @@
 									   delayMs="66"
 									   id="idAnimatedSprite"
 									   press="onSpritePress"
+									   animationStarted="animationStarted"
+									   animationFinished="animationFinished"
 									   />
 			</Panel>
 			
