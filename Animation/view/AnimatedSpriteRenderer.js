@@ -21,7 +21,6 @@ sap.ui.define(['jquery.sap.global'],
 
 			oRm.writeClasses();
 
-			//TODO need further discussion to decide if tooltip is still needed for mobile
 			var tooltip = oImage.getTooltip_AsString();
 			if (tooltip) {
 				oRm.writeAttributeEscaped("title", tooltip);

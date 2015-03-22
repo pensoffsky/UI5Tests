@@ -3,6 +3,8 @@ sap.ui.define(['jquery.sap.global', 'sap/ui/core/Control'],
     function(jQuery, Control) {
         "use strict";
 
+//TODO event that fires at end of animation
+
         var AnimatedSprite = Control.extend("view.AnimatedSprite", {
             metadata: {
 
